@@ -1,5 +1,5 @@
 const BankList = require('../models/BankList');
-const { Op } = require('sequelize')
+const { Op } = require('sequelize') 
 
 // const sequelizeMlm2010 = require('../../config/klink_mlm2010.js');
 
