@@ -1,0 +1,277 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "K-NET API DOCUMENTATION",
+    "description": "K-Net Api",
+    "contact": {
+      "email": "hilal@k-link.co.id"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [{
+    "url": "https://api.k-link.dev/api"
+  }],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Get JWT token for accessing protected routes ",
+        "operationId": "gettoken",
+        "requestBody": {
+          "description": "Username & Password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Token"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input",
+            "content": {}
+          }
+        },
+        "x-codegen-request-body-name": "body"
+      }
+    },
+    "/v.1/login": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "parameters": [{
+          "in": "header",
+          "name": "Authorization",
+          "schema": {
+            "type": "string",
+            "format": "token"
+          },
+          "required": true,
+          "description": "Bearer [token] | from auth/login response"
+        }],
+        "summary": "Login",
+        "description": "Login Verifivation and get member data",
+        "operationId": "login",
+        "requestBody": {
+          "description": "ID Member & Password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/User"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "401": {
+            "description": "No Authorization was found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "description": "failed."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "No Authorization was found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/open/getAllProductList": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get product list",
+        "description": "Get product list",
+        "operationId": "getproduct",
+        "responses": {
+          "200": {
+            "description": "A User object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "prdcd": {
+                      "type": "string",
+                      "description": "Product code."
+                    },
+                    "prdnm": {
+                      "type": "string",
+                      "description": "Product name."
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Product description."
+                    },
+                    "prdcdcat": {
+                      "type": "integer",
+                      "description": "Product category ID."
+                    },
+                    "prdnmcatnm": {
+                      "type": "string",
+                      "description": "Product category name."
+                    },
+                    "img_url": {
+                      "type": "string",
+                      "description": "Image url."
+                    },
+                    "price_w": {
+                      "type": "integer",
+                      "description": "Member price west."
+                    },
+                    "price_e": {
+                      "type": "integer",
+                      "description": "Member price east."
+                    },
+                    "price_cw": {
+                      "type": "integer",
+                      "description": "Consument price west."
+                    },
+                    "price_ce": {
+                      "type": "integer",
+                      "description": "Consument price east."
+                    },
+                    "bv": {
+                      "type": "integer",
+                      "description": "Business value."
+                    },
+                    "weight": {
+                      "type": "string",
+                      "description": "Product weight."
+                    },
+                    "ecomm_status": {
+                      "type": "string",
+                      "description": "Ecommerce status."
+                    },
+                    "is_discontinue": {
+                      "type": "string",
+                      "description": "Discontinue product ."
+                    },
+                    "max_order": {
+                      "type": "integer",
+                      "description": "Maximal order in one transaction."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/open/getCatProduct": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "summary": "Get product category",
+        "description": "Get product category",
+        "operationId": "getproductcat",
+        "responses": {
+          "200": {
+            "description": "Product category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "cat_id": {
+                        "type": "integer",
+                        "description": "Category ID."
+                      },
+                      "cat_desc": {
+                        "type": "string",
+                        "description": "Category Name."
+                      },
+                      "img_url": {
+                        "type": "string",
+                        "description": "Category image."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Token": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "format": "varchar"
+          },
+          "password": {
+            "type": "string",
+            "format": "varchar"
+          }
+        },
+        "xml": {
+          "name": "Token"
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "dfno": {
+            "type": "string",
+            "format": "varchar"
+          },
+          "password": {
+            "type": "string",
+            "format": "varchar"
+          }
+        },
+        "xml": {
+          "name": "User"
+        }
+      }
+    }
+  }
+}
